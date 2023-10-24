@@ -1,10 +1,64 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import api from '@/services/api';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { AxiosError } from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
 
-export default async function SignUp() {
+const yupSchema = yup.object({
+  name: yup
+    .string()
+    .min(3, 'Insira no mínimo 3 caracteres.')
+    .max(50, 'Insira no máximo 50 caracteres.')
+    .matches(
+      /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\s]+$/,
+      'Insira apenas letras.',
+    )
+    .matches(/^\S.*\S$/, 'Insira um nome válido.')
+    .required('Nome é obrigatório.'),
+  email: yup.string().email('Email inválido').required('Email é obrigatório.'),
+  password: yup.string().required('Senha é obrigatório.'),
+  confirm_password: yup
+    .string()
+    .required('Confirmação de senha é obrigatória.')
+    .oneOf([yup.ref('password')], 'As senhas digitadas não coincidem.'),
+});
+
+type YupSchemaType = yup.InferType<typeof yupSchema>;
+
+export default function SignUp() {
+  const { push } = useRouter();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<YupSchemaType>({
+    resolver: yupResolver(yupSchema),
+  });
+
+  const onSubmit = async ({ name, email, password }: YupSchemaType) => {
+    try {
+      await api.post('/user', {
+        name,
+        email,
+        password,
+      });
+
+      push('/sign-in');
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <div className="h-screen flex">
       <div className="h-full hidden lg:block w-full xl:w-[1024px] relative">
@@ -29,12 +83,67 @@ export default async function SignUp() {
             </h2>
           </div>
 
-          <div></div>
-
-          <form className="w-full space-y-3">
-            <Input placeholder="E-mail" type="email" />
-            <Input placeholder="Senha" type="password" />
-            <Input placeholder="Confirmar senha" type="password" />
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-3">
+            <Controller
+              name="name"
+              defaultValue=""
+              control={control}
+              render={({ field }) => (
+                <Input
+                  type="text"
+                  placeholder="Nome completo"
+                  required
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              name="email"
+              defaultValue=""
+              control={control}
+              render={({ field }) => (
+                <Input
+                  placeholder="E-mail"
+                  type="email"
+                  required
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              name="password"
+              defaultValue=""
+              control={control}
+              render={({ field }) => (
+                <Input
+                  placeholder="Senha"
+                  type="password"
+                  required
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              name="confirm_password"
+              defaultValue=""
+              control={control}
+              render={({ field }) => (
+                <Input
+                  placeholder="Confirmar senha"
+                  type="password"
+                  required
+                  error={!!errors.confirm_password}
+                  helperText={errors.confirm_password?.message}
+                  {...field}
+                />
+              )}
+            />
             <Button className="w-full">Cadastrar</Button>
           </form>
 
