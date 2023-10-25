@@ -9,9 +9,10 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import api from '@/services/api';
-import { AxiosError } from 'axios';
 import { setAccessTokenCookie } from '@/lib/actions';
 import { useRouter } from 'next/navigation';
+import { axiosErrorMessageHandler } from '@/lib/utils';
+import toast from 'react-hot-toast';
 
 const yupSchema = yup.object({
   email: yup.string().email('Email inválido').required('Email é obrigatório.'),
@@ -40,9 +41,7 @@ export default function SignIn() {
       setAccessTokenCookie(data?.accessToken);
       push('/');
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error);
-      }
+      toast.error(axiosErrorMessageHandler(error as Error));
     }
   };
 

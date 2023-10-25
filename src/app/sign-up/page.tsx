@@ -3,9 +3,10 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { axiosErrorMessageHandler } from '@/lib/utils';
+import { toast } from 'react-hot-toast';
 import api from '@/services/api';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AxiosError } from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -24,7 +25,17 @@ const yupSchema = yup.object({
     .matches(/^\S.*\S$/, 'Insira um nome válido.')
     .required('Nome é obrigatório.'),
   email: yup.string().email('Email inválido').required('Email é obrigatório.'),
-  password: yup.string().required('Senha é obrigatório.'),
+  password: yup
+    .string()
+    .matches(/(?:[a-zA-Z].*){6,}/, 'Insira no mínimo 6 letras.')
+    .matches(/.*[A-Z].*/, 'Insira no mínimo 1 letra maiúscula.')
+    .matches(/.*[a-z].*/, 'Insira no mínimo 1 letra minúscula.')
+    .matches(/.*[0-9].*/, 'Insira no mínimo 1 número.')
+    .matches(
+      /.*[!@#$%^&*()_+{}[\]/:;<>,.?~\\-].*/,
+      'Insira pelo menos um dos seguintes símbolos: !@#$%^&*()_+{}[]/:;<>,.?~\\-',
+    )
+    .required('Senha é obrigatório.'),
   confirm_password: yup
     .string()
     .required('Confirmação de senha é obrigatória.')
@@ -46,16 +57,15 @@ export default function SignUp() {
   const onSubmit = async ({ name, email, password }: YupSchemaType) => {
     try {
       await api.post('/user', {
-        name,
+        username: name,
         email,
         password,
       });
 
+      toast.success('Cadastro realizado com sucesso!');
       push('/sign-in');
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error);
-      }
+      toast.error(axiosErrorMessageHandler(error as Error));
     }
   };
 
@@ -121,7 +131,7 @@ export default function SignUp() {
               render={({ field }) => (
                 <Input
                   placeholder="Senha"
-                  type="password"
+                  // type="password"
                   required
                   error={!!errors.password}
                   helperText={errors.password?.message}
@@ -136,7 +146,7 @@ export default function SignUp() {
               render={({ field }) => (
                 <Input
                   placeholder="Confirmar senha"
-                  type="password"
+                  // type="password"
                   required
                   error={!!errors.confirm_password}
                   helperText={errors.confirm_password?.message}
