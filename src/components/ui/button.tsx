@@ -10,45 +10,48 @@ const buttonVariants = cva(
     variants: {
       colorVariant: {
         primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/90',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        ghost: 'hover:bg-neutral-100 hover:text-neutral-900',
-        link: 'text-neutral-900 underline-offset-4 hover:underline'
+        secondary:
+          'bg-secondary text-secondary-foreground hover:bg-secondary/90',
+        destructive:
+          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        ghost: 'hover:bg-gray-300/30 hover:text-primary',
+        link: 'text-primary underline-offset-4 hover:underline',
       },
       variant: {
-        outline: 'border-2 bg-transparent'
+        outline: 'border-2 bg-transparent',
       },
       size: {
         default: 'h-10 px-4 py-2',
         sm: 'h-9 rounded-md px-3',
         lg: 'h-11 rounded-md px-8',
-        icon: 'h-10 w-10'
-      }
+        icon: 'h-10 w-10',
+      },
     },
     compoundVariants: [
       {
         colorVariant: 'primary',
         variant: 'outline',
-        className: 'border-primary text-primary hover:text-primary-foreground hover:bg-primary'
+        className:
+          'border-primary text-primary hover:text-primary-foreground hover:bg-primary',
       },
       {
         colorVariant: 'secondary',
         variant: 'outline',
         className:
-          'border-secondary text-secondary hover:text-secondary-foreground hover:bg-secondary'
+          'border-secondary text-secondary hover:text-secondary-foreground hover:bg-secondary',
       },
       {
         colorVariant: 'destructive',
         variant: 'outline',
         className:
-          'border-destructive text-destructive hover:text-destructive-foreground hover:bg-destructive'
-      }
+          'border-destructive text-destructive hover:text-destructive-foreground hover:bg-destructive',
+      },
     ],
     defaultVariants: {
       colorVariant: 'primary',
-      size: 'default'
-    }
-  }
+      size: 'default',
+    },
+  },
 );
 
 export interface ButtonProps
@@ -58,16 +61,21 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, colorVariant, size, asChild = false, ...props }, ref) => {
+  (
+    { className, variant, colorVariant, size, asChild = false, ...props },
+    ref,
+  ) => {
     const Comp = asChild ? Slot : 'button';
     return (
       <Comp
-        className={cn(buttonVariants({ variant, colorVariant, size, className }))}
+        className={cn(
+          buttonVariants({ variant, colorVariant, size, className }),
+        )}
         ref={ref}
         {...props}
       />
     );
-  }
+  },
 );
 Button.displayName = 'Button';
 
