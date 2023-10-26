@@ -7,7 +7,7 @@ export default function RoutesLayout({
 }) {
   return (
     <div className="h-screen flex">
-      <div className="h-full hidden lg:block w-[1024px] relative">
+      <div className="h-full hidden lg:block  w-[1024px] relative">
         <Image
           alt="Imagem de fundo"
           src={'/background-image.png'}
@@ -20,7 +20,9 @@ export default function RoutesLayout({
           O tempo é o bem mais precioso. Cabe a nós usá-lo da melhor forma.
         </div>
       </div>
-      <div className="w-full flex justify-center items-center">{children}</div>
+      <div className="relative w-full flex justify-center items-center">
+        {children}
+      </div>
     </div>
   );
 }
