@@ -9,13 +9,15 @@ export default async function Home() {
 
   return (
     <div className="w-full p-4 max-w-xs flex flex-col gap-4 justify-center items-center">
-      {loggedUser && <LogoutButton />}
+      {loggedUser && (
+        <LogoutButton className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-2 text-primary" />
+      )}
 
       {loggedUser && (
         <div className="mb-4">
           <span className="text-xl font-medium">Bem-vindo</span>
           <br />
-          Pedro Parente Oinegue Fulfaro
+          {loggedUser.username}
         </div>
       )}
 
