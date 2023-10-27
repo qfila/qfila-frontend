@@ -25,7 +25,7 @@ export default function SignIn() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<YupSchemaType>({
     resolver: yupResolver(yupSchema),
   });
@@ -85,7 +85,13 @@ export default function SignIn() {
               />
             )}
           />
-          <Button className="w-full">Enviar</Button>
+          <Button
+            loading={isSubmitting}
+            disabled={isSubmitting}
+            className="w-full"
+          >
+            Entrar
+          </Button>
         </form>
 
         <Separator />

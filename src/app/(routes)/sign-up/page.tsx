@@ -48,7 +48,7 @@ export default function SignUp() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<YupSchemaType>({
     resolver: yupResolver(yupSchema),
   });
@@ -139,7 +139,13 @@ export default function SignUp() {
               />
             )}
           />
-          <Button className="w-full">Cadastrar</Button>
+          <Button
+            loading={isSubmitting}
+            disabled={isSubmitting}
+            className="w-full"
+          >
+            Cadastrar
+          </Button>
         </form>
 
         <Separator />
