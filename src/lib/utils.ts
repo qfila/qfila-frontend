@@ -17,5 +17,5 @@ export function axiosErrorMessageHandler(error: Error) {
     }
   }
 
-  return 'Não foi possível realizar está ação no momento, tente novamente mais tarde.';
+  return 'Não foi possível realizar esta ação no momento, tente novamente mais tarde.';
 }
