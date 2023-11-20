@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-export default function RoutesLayout({
+export default function UserLayout({
   children,
 }: {
   children: React.ReactNode;
