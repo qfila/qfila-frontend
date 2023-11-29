@@ -11,6 +11,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { useState } from 'react';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const yupSchema = yup.object({
   name: yup
@@ -44,6 +46,8 @@ const yupSchema = yup.object({
 type YupSchemaType = yup.InferType<typeof yupSchema>;
 
 export default function SignUp() {
+  const [isManager, setIsManager] = useState(false);
+
   const { push } = useRouter();
   const {
     control,
@@ -53,12 +57,17 @@ export default function SignUp() {
     resolver: yupResolver(yupSchema),
   });
 
+  const toggleIsManager = () => {
+    setIsManager((prev) => !prev);
+  };
+
   const onSubmit = async ({ name, email, password }: YupSchemaType) => {
     try {
       await api.post('/user', {
         username: name,
         email,
         password,
+        role: isManager ? 'MANAGER' : 'USER',
       });
 
       toast.success('Cadastro realizado com sucesso!');
@@ -139,6 +148,15 @@ export default function SignUp() {
               />
             )}
           />
+          <input
+            type="checkbox"
+            onClick={toggleIsManager}
+            checked={isManager}
+            id="role"
+            title="teste"
+            className="m-2"
+          />
+          <label htmlFor="role">Sou empresa</label>
           <Button
             loading={isSubmitting}
             disabled={isSubmitting}

@@ -15,18 +15,10 @@ const yupSchema = yup.object({
   title: yup
     .string()
     .min(3, 'Insira no mínimo 3 caracteres.')
-    .matches(
-      /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\s]+$/,
-      'Insira apenas letras.',
-    )
     .required('Nome da fila é obrigatório.'),
   description: yup
     .string()
     .min(3, 'Insira no mínimo 3 caracteres.')
-    .matches(
-      /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\s]+$/,
-      'Insira apenas letras.',
-    )
     .required('Descrição da fila é obrigatório.'),
   averageWaitTimeInMinutes: yup
     .number()
@@ -65,14 +57,15 @@ export default function CreateQueue() {
     maxParticipants,
   }: YupSchemaType) => {
     try {
-      await api.post('/user', {
+      await api.post('/queue', {
         title,
         description,
         averageWaitTimeInMinutes,
         maxParticipants,
       });
 
-      toast.success(`Fila criada ${title} criada com sucesso!`);
+      toast.success(`Fila "${title}" criada com sucesso!`);
+
       push('/queues');
     } catch (error) {
       toast.error(axiosErrorMessageHandler(error as Error));

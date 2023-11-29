@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import api from '@/services/api';
 import { setAccessTokenCookie } from '@/lib/actions';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { axiosErrorMessageHandler } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
@@ -38,7 +38,11 @@ export default function SignIn() {
       });
 
       setAccessTokenCookie(data?.accessToken);
-      push('/');
+
+      const isManager = data.role === 'MANAGER';
+
+      if (isManager) return push('/queues');
+      else push('/');
     } catch (error) {
       toast.error(axiosErrorMessageHandler(error as Error));
     }

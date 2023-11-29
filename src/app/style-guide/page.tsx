@@ -6,7 +6,7 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter
+  CardFooter,
 } from '@/components/ui/card';
 import {
   Dialog,
@@ -14,7 +14,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -24,7 +24,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
-  Sheet
+  Sheet,
 } from '@/components/ui/sheet';
 
 export default function Home() {
@@ -52,10 +52,18 @@ export default function Home() {
           <Button variant={'outline'} className="w-max">
             Outline Primary
           </Button>
-          <Button variant={'outline'} colorVariant={'secondary'} className="w-max">
+          <Button
+            variant={'outline'}
+            colorVariant={'secondary'}
+            className="w-max"
+          >
             Outline secondary
           </Button>
-          <Button variant={'outline'} colorVariant={'destructive'} className="w-max">
+          <Button
+            variant={'outline'}
+            colorVariant={'destructive'}
+            className="w-max"
+          >
             Outline Destructive
           </Button>
         </div>
@@ -74,8 +82,8 @@ export default function Home() {
             <DialogHeader>
               <DialogTitle>Are you sure absolutely sure?</DialogTitle>
               <DialogDescription>
-                This action cannot be undone. This will permanently delete your account and remove
-                your data from our servers.
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
@@ -86,7 +94,9 @@ export default function Home() {
         <Card className="w-[350px]">
           <CardHeader>
             <CardTitle>Create project</CardTitle>
-            <CardDescription>Deploy your new project in one-click.</CardDescription>
+            <CardDescription>
+              Deploy your new project in one-click.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form>
@@ -116,8 +126,8 @@ export default function Home() {
             <SheetHeader>
               <SheetTitle>Are you sure absolutely sure?</SheetTitle>
               <SheetDescription>
-                This action cannot be undone. This will permanently delete your account and remove
-                your data from our servers.
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
               </SheetDescription>
             </SheetHeader>
           </SheetContent>
@@ -130,8 +140,8 @@ export default function Home() {
             <SheetHeader>
               <SheetTitle>Are you sure absolutely sure?</SheetTitle>
               <SheetDescription>
-                This action cannot be undone. This will permanently delete your account and remove
-                your data from our servers.
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
               </SheetDescription>
             </SheetHeader>
           </SheetContent>
