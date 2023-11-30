@@ -1,17 +1,19 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import clsx from 'clsx';
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
   helperText?: string;
+  fullWidth?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, error, helperText, ...props }, ref) => {
+  ({ className, type, error, helperText, fullWidth, ...props }, ref) => {
     return (
-      <div className="flex flex-col gap-1 w-full">
+      <div className={clsx('flex flex-col gap-1', fullWidth && 'w-full')}>
         <input
           type={type}
           className={cn(

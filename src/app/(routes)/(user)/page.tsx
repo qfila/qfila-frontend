@@ -27,7 +27,7 @@ export default async function Home() {
           Filas
         </h2>
       </div>
-      <Input placeholder="Código da fila" />
+      <Input fullWidth placeholder="Código da fila" />
       <Button className="w-full">Enviar</Button>
 
       {!loggedUser && (

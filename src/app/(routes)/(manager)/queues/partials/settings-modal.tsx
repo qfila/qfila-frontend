@@ -24,13 +24,10 @@ import {
 } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
+import { Queue } from '@/types';
 
 interface Props {
-  queueId: string;
-  queueTitle: string;
-  queueDescription: string;
-  queueAverageWaitTimeInMinutes: number;
-  queueMaxParticipants: number;
+  queue: Queue;
 }
 
 interface ModalRow {
@@ -72,13 +69,7 @@ const editQueueSchema = yup.object({
 
 type EditQueueSchema = yup.InferType<typeof editQueueSchema>;
 
-export function SettingsModal({
-  queueId,
-  queueTitle,
-  queueDescription,
-  queueAverageWaitTimeInMinutes,
-  queueMaxParticipants,
-}: Props) {
+export function SettingsModal({ queue }: Props) {
   const [openModal, setOpenModal] = useState(false);
   const [openDeleteQueuePopover, setOpenDeleteQueuePopover] = useState(false);
   const [editQueue, setEditQueue] = useState(false);
@@ -88,22 +79,22 @@ export function SettingsModal({
     {
       name: 'title',
       placeholder: 'Título',
-      value: queueTitle,
+      value: queue.title,
     },
     {
       name: 'description',
       placeholder: 'Descrição',
-      value: queueDescription,
+      value: queue.description,
     },
     {
       name: 'averageWaitTimeInMinutes',
       placeholder: 'Est. tempo/pessoa',
-      value: queueAverageWaitTimeInMinutes,
+      value: queue.averageWaitTimeInMinutes,
     },
     {
       name: 'maxParticipants',
       placeholder: 'Max. pessoas',
-      value: queueMaxParticipants,
+      value: queue.maxParticipants,
     },
   ];
 
@@ -131,9 +122,10 @@ export function SettingsModal({
 
   const handleDeleteQueue = async () => {
     try {
-      await api.delete(`/queue/${queueId}`);
-      toast.success(`Fila "${queueTitle}" deletada com sucesso!`);
+      await api.delete(`/queue/${queue.id}`);
+      toast.success(`Fila "${queue.title}" deletada com sucesso!`);
       handleOpenModal(false);
+      handleOpenDeleteQueuePopover(false);
       refresh();
     } catch (error) {
       toast.error(axiosErrorMessageHandler(error as Error));

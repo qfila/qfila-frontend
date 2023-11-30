@@ -19,8 +19,8 @@ import {
   Menu,
   Settings,
 } from 'lucide-react';
-import Link from 'next/link';
 import { useState } from 'react';
+import { SideBarNavLink } from './nav-link';
 
 interface Props {
   loggedUser: User;
@@ -30,12 +30,8 @@ export function ManagerSideBar({ loggedUser }: Props) {
   const [openOnMobile, setOpenOnMobile] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
-  const handleOpenSideBar = () => {
-    setOpenOnMobile(true);
-  };
-
-  const handleCloseSideBar = () => {
-    setOpenOnMobile(false);
+  const handleShowSideBar = (value: boolean) => {
+    setOpenOnMobile(value);
   };
 
   const handleLogOut = () => {
@@ -46,15 +42,19 @@ export function ManagerSideBar({ loggedUser }: Props) {
   const showOverlay = isDesktop ? false : openOnMobile;
 
   return (
-    <Sheet open={showSideBar} modal={showOverlay}>
+    <Sheet
+      open={showSideBar}
+      onOpenChange={handleShowSideBar}
+      modal={showOverlay}
+    >
       {!isDesktop && (
-        <SheetTrigger className="p-3" onClick={handleOpenSideBar}>
+        <SheetTrigger className="p-3" onClick={() => handleShowSideBar(true)}>
           <Menu />
         </SheetTrigger>
       )}
 
       <SheetContent
-        onInteractOutside={handleCloseSideBar}
+        onInteractOutside={() => handleShowSideBar(false)}
         disableOverlay={!showOverlay}
         className="w-[300px]"
         side={'left'}
@@ -73,27 +73,16 @@ export function ManagerSideBar({ loggedUser }: Props) {
               </p>
             </div>
           </div>
-          <div className="flex flex-col gap-4 w-max">
-            <Link href={'/queues'}>
-              <button className="flex gap-4 hover:bg-gray-200/70 p-2 rounded-xl w-full">
-                <Home />
-                <span>Ínicio</span>
-              </button>
-            </Link>
-            <Link href={'/create-queue'}>
-              <button className="text-primary flex gap-4 hover:bg-gray-200/70 p-2 rounded-xl w-full">
-                <FilePlus2 />
-                <span>Criar nova fila</span>
-              </button>
-            </Link>
-            <button className="flex gap-4 hover:bg-gray-200/70 p-2 rounded-xl w-full">
-              <HelpCircle />
-              <span>Ajuda</span>
-            </button>
-            <button className="flex gap-4 hover:bg-gray-200/70 p-2 rounded-xl w-full">
-              <Settings />
-              <span>Configurações</span>
-            </button>
+          <div className="flex flex-col gap-4">
+            <SideBarNavLink title="Ínicio" icon={<Home />} href="/queues" />
+            <SideBarNavLink
+              title="Criar nova fila"
+              icon={<FilePlus2 />}
+              className="text-primary"
+              href="/create-queue"
+            />
+            <SideBarNavLink title="Ajuda" icon={<HelpCircle />} />
+            <SideBarNavLink title="Configurações" icon={<Settings />} />
           </div>
           <div className="flex justify-between items-center gap-4">
             <div>

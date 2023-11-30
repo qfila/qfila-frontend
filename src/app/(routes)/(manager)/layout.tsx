@@ -1,6 +1,6 @@
 import { getLoggedUser } from '@/lib/actions';
 import { notFound } from 'next/navigation';
-import { ManagerSideBar } from './partials/manager-side-bar';
+import { ManagerSideBar } from './partials/SideBar';
 
 export default async function ManagerLayout({
   children,
