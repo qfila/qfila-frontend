@@ -11,7 +11,7 @@ export interface InputProps
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, error, helperText, ...props }, ref) => {
     return (
-      <>
+      <div className="flex flex-col gap-1 w-full">
         <input
           type={type}
           className={cn(
@@ -24,14 +24,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {helperText && (
           <span
             className={cn(
-              'text-sm ml-1 mt-1',
+              'text-sm ml-1',
               error ? 'text-destructive' : 'text-primary',
             )}
           >
             {helperText}
           </span>
         )}
-      </>
+      </div>
     );
   },
 );

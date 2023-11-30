@@ -19,3 +19,9 @@ export function axiosErrorMessageHandler(error: Error) {
 
   return 'Não foi possível realizar esta ação no momento, tente novamente mais tarde.';
 }
+
+export function formatDescription(description: string) {
+  return description.length > 50
+    ? description.substring(0, 50) + '...'
+    : description;
+}

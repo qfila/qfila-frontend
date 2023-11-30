@@ -23,7 +23,7 @@ const yupSchema = yup.object({
   averageWaitTimeInMinutes: yup
     .number()
     .positive()
-    .min(1, 'Insira no mínimo 1 minuto')
+    .min(1, 'Insira no mínimo 1 minuto(s)')
     .transform((value) =>
       isNaN(value) || value === null || value === undefined ? 0 : value,
     )
@@ -31,7 +31,7 @@ const yupSchema = yup.object({
   maxParticipants: yup
     .number()
     .positive()
-    .min(1, 'Insira no mínimo 1')
+    .min(4, 'Insira no mínimo 4')
     .transform((value) =>
       isNaN(value) || value === null || value === undefined ? 0 : value,
     )
@@ -41,7 +41,7 @@ const yupSchema = yup.object({
 type YupSchemaType = yup.InferType<typeof yupSchema>;
 
 export default function CreateQueue() {
-  const { push } = useRouter();
+  const { push, refresh } = useRouter();
   const {
     control,
     handleSubmit,
@@ -67,6 +67,7 @@ export default function CreateQueue() {
       toast.success(`Fila "${title}" criada com sucesso!`);
 
       push('/queues');
+      refresh();
     } catch (error) {
       toast.error(axiosErrorMessageHandler(error as Error));
     }

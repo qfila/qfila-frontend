@@ -1,29 +1,19 @@
-'use client';
+import { getLoggedUser } from '@/lib/actions';
+import { notFound } from 'next/navigation';
+import { ManagerSideBar } from './partials/manager-side-bar';
 
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
-
-export default function ManagerLayout({
+export default async function ManagerLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const loggedUser = await getLoggedUser();
+  if (loggedUser?.role === 'USER' || !loggedUser) notFound();
+
   return (
     <>
-      <Sheet open={true} modal={false}>
-        <SheetTrigger>open</SheetTrigger>
-        <SheetContent disableOverlay side={'left'}>
-          <SheetHeader>
-            <SheetTitle>Teste</SheetTitle>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
-      <main className="ml-[420px]">{children}</main>
+      <ManagerSideBar loggedUser={loggedUser} />
+      <main className="md:ml-[344px]">{children}</main>
     </>
   );
 }
