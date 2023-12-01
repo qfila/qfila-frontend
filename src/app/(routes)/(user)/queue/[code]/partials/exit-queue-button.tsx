@@ -18,7 +18,7 @@ interface Props {
   userId: string;
 }
 
-export function ExitQueueButton({ queueId, userId }: Props) {
+export function ExitQueueButton({ queueId }: Props) {
   const [openPopover, setOpenPopover] = useState(false);
   const { push } = useRouter();
 
@@ -28,7 +28,7 @@ export function ExitQueueButton({ queueId, userId }: Props) {
 
   async function exitQueue() {
     try {
-      await api.delete(`/queue/${queueId}/user/${userId}`);
+      await api.post(`/queue/${queueId}/exit`);
       push('/');
     } catch (error) {
       toast.error(axiosErrorMessageHandler(error as Error));

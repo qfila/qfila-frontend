@@ -11,22 +11,15 @@ import api from '@/services/api';
 import { Queue, User } from '@/types';
 import { axiosErrorMessageHandler } from '@/lib/utils';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
 
 interface Props {
   participant: Participant;
   queue: Queue;
-  // eslint-disable-next-line no-unused-vars
-  handleOpenModal: (value: boolean) => void;
+  refetch: () => Promise<void>;
 }
 
-export function RemoveUserButton({
-  participant,
-  queue,
-  handleOpenModal,
-}: Props) {
+export function RemoveUserButton({ participant, queue, refetch }: Props) {
   const [openPopover, setOpenPopover] = useState(false);
-  const { refresh } = useRouter();
 
   const handleOpenPopover = (value: boolean) => {
     setOpenPopover(value);
@@ -36,8 +29,7 @@ export function RemoveUserButton({
     try {
       await api.delete(`/queue/${queue.id}/user/${participant.id}`);
       toast.success(`${participant.username} foi removido da fila!`);
-      handleOpenModal(false);
-      refresh();
+      refetch();
     } catch (error) {
       toast.error(axiosErrorMessageHandler(error as Error));
     }

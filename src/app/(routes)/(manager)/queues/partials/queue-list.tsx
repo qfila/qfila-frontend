@@ -1,3 +1,5 @@
+'use client';
+
 import { TimeRemaining } from '@/components/time-remaining';
 import {
   Card,
@@ -9,15 +11,42 @@ import { Queue } from '@/types';
 import { formatDescription } from '@/lib/utils';
 import { SettingsModal } from './settings-modal';
 import { QueueInfoButton } from './queue-info-button';
+import { useEffect, useState } from 'react';
+import api from '@/services/api';
 
-interface Props {
+interface GetQueueResponse {
   queues: Queue[];
 }
 
-export function QueueList({ queues }: Props) {
+export function QueueList() {
+  const [queues, setQueues] = useState<Queue[]>([]);
+
   const formatDate = (ISODate: string) => {
     return new Date(ISODate).toLocaleDateString();
   };
+
+  const fetchData = async () => {
+    const { data } = await api.get<GetQueueResponse>('/queue');
+
+    setQueues(data.queues);
+  };
+
+  useEffect(() => {
+    fetchData();
+
+    const interval = setInterval(() => {
+      const currentSeconds = new Date().getSeconds();
+
+      if (currentSeconds % 5 === 0) {
+        fetchData();
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="grid lg:grid-cols-2 2xl:grid-cols-3 flex-wrap justify-center md:justify-start gap-4">

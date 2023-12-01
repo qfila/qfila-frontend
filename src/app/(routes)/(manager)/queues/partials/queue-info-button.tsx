@@ -13,8 +13,7 @@ import { Queue, User } from '@/types';
 import api from '@/services/api';
 import { axiosErrorMessageHandler } from '@/lib/utils';
 import toast from 'react-hot-toast';
-import { ChangeEvent, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { RemoveUserButton } from './remove-user-button';
 
 interface Props {
@@ -66,7 +65,6 @@ function calculateTimeDifference(
 export function QueueInfoButton({ queue }: Props) {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [openModal, setOpenModal] = useState(false);
-  const { refresh } = useRouter();
 
   const handleOpenModal = (value: boolean) => {
     setOpenModal(value);
@@ -103,7 +101,6 @@ export function QueueInfoButton({ queue }: Props) {
     try {
       const { data } = await api.get(`/queue/${queue.id}`);
 
-      console.log('participantes', data.participants);
       setParticipants(data.participants);
     } catch (error) {
       toast.error(axiosErrorMessageHandler(error as Error));
@@ -121,8 +118,9 @@ export function QueueInfoButton({ queue }: Props) {
       toast.success(
         `${participant.username} agora está na posição ${newPosition} da fila!`,
       );
-      handleOpenModal(false);
-      refresh();
+      // handleOpenModal(false);
+
+      fetchParticipants();
     } catch (error) {
       toast.error(axiosErrorMessageHandler(error as Error));
     }
@@ -136,6 +134,22 @@ export function QueueInfoButton({ queue }: Props) {
 
     replaceUserPosition(newPosition, participant);
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentSeconds = new Date().getSeconds();
+
+      if (currentSeconds % 5 === 0) {
+        fetchParticipants();
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Dialog open={openModal} onOpenChange={handleOpenModal}>
@@ -203,7 +217,7 @@ export function QueueInfoButton({ queue }: Props) {
                       className="cursor-pointer"
                       name="changePosition"
                       id="changePosition"
-                      defaultValue={participant.position}
+                      value={participant.position}
                       onChange={(event) =>
                         handleSelectChange(event, participant)
                       }
@@ -223,7 +237,7 @@ export function QueueInfoButton({ queue }: Props) {
                   <RemoveUserButton
                     participant={participant}
                     queue={queue}
-                    handleOpenModal={handleOpenModal}
+                    refetch={fetchParticipants}
                   />
                 </div>
               </div>
