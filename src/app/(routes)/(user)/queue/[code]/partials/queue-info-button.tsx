@@ -46,8 +46,7 @@ export function QueueInfoButton({ queue }: Props) {
     },
     {
       placeholder: 'Descrição',
-      value:
-        'queue.description queue.descriptionqueue.descriptionqueue.descriptionqueue.descriptionqueue.descriptionqueue.description',
+      value: queue.description,
     },
     {
       placeholder: 'Total de pessoas',
