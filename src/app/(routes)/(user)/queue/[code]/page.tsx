@@ -14,14 +14,15 @@ interface Props {
   params: Params;
 }
 
-interface CurrentPosition {
+export interface CustomQueueProps extends Queue {
   currentPosition: number;
+  joinedAt: string;
 }
 
 export default async function QueuePage({ params }: Props) {
   const loggedUser = await getLoggedUser();
 
-  const { data: queue } = await api.get<Queue & CurrentPosition>('/queue', {
+  const { data: queue } = await api.get<CustomQueueProps>('/queue', {
     params: {
       code: params.code,
     },
@@ -30,7 +31,7 @@ export default async function QueuePage({ params }: Props) {
   return (
     <div className="p-4">
       <h1 className="text-2xl md:text-3xl text-center">{queue.title}</h1>
-      <p className="text-lg md:text-2xl">{queue.description}</p>
+      <p className="text-lg md:text-2xl text-center">{queue.description}</p>
       <Separator className="my-7 md:my-10" />
       <div className="max-w-fit mx-auto">
         <h3 className="text-2xl text-center font-light ">Tempo restante</h3>

@@ -14,12 +14,28 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Queue } from '@/types';
 
 import { Info } from 'lucide-react';
+import { CustomQueueProps } from '../page';
 
 interface Props {
-  queue: Queue;
+  queue: CustomQueueProps;
+}
+
+function formatJoinedAt(isoDate: string): string {
+  const date = new Date(isoDate);
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  const joinedAt = `${day}/${month}/${year} às ${hours}:${minutes}:${seconds}`;
+
+  return joinedAt;
 }
 
 export function QueueInfoButton({ queue }: Props) {
@@ -36,6 +52,10 @@ export function QueueInfoButton({ queue }: Props) {
     {
       placeholder: 'Total de pessoas',
       value: queue.participantsCount,
+    },
+    {
+      placeholder: 'Você entrou em',
+      value: formatJoinedAt(queue.joinedAt),
     },
   ];
 
@@ -56,11 +76,11 @@ export function QueueInfoButton({ queue }: Props) {
           return (
             <div
               key={row.placeholder}
-              className="flex flex-col sm:flex-row sm:items-center justify-between sm:gap-6"
+              className="sm:flex items-center justify-between gap-6"
             >
               <p className="text-foreground truncate">{row.placeholder}</p>
               <TooltipProvider>
-                <Tooltip>
+                <Tooltip defaultOpen={false}>
                   <TooltipTrigger className="cursor-default">
                     <p className="max-w-[200px] break-words leading-5 truncate">
                       {row.value}

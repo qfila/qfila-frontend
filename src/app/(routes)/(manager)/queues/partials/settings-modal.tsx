@@ -215,7 +215,7 @@ export function SettingsModal({ queue }: Props) {
           return (
             <div
               key={row.placeholder}
-              className="flex flex-col sm:flex-row sm:items-center justify-between sm:gap-6"
+              className="sm:flex items-center justify-between gap-6"
             >
               <p className="text-foreground truncate">{row.placeholder}</p>
               <TooltipProvider>
@@ -273,7 +273,7 @@ export function SettingsModal({ queue }: Props) {
           open={openDeleteQueuePopover}
           onOpenChange={handleOpenDeleteQueuePopover}
         >
-          <PopoverTrigger className="w-full ">
+          <PopoverTrigger className="w-full">
             <Button
               className="w-full rounded-3xl"
               colorVariant="destructive"
