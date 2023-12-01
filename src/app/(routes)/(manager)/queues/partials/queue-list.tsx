@@ -8,6 +8,7 @@ import {
 import { Queue } from '@/types';
 import { formatDescription } from '@/lib/utils';
 import { SettingsModal } from './settings-modal';
+import { QueueInfoButton } from './queue-info-button';
 
 interface Props {
   queues: Queue[];
@@ -44,7 +45,7 @@ export function QueueList({ queues }: Props) {
               </p>
               <div className="flex flex-row justify-between w-[50%]">
                 <div className="text-2xl">o</div>
-                <div className="text-2xl">o</div>
+                <QueueInfoButton queue={queue} />
                 <div className="text-2xl">o</div>
               </div>
             </div>

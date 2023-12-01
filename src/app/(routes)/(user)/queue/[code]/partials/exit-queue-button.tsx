@@ -34,6 +34,7 @@ export function ExitQueueButton({ queueId, userId }: Props) {
       toast.error(axiosErrorMessageHandler(error as Error));
     }
   }
+
   return (
     <Popover open={openPopover} onOpenChange={handleOpenPopover}>
       <PopoverTrigger className="w-full">

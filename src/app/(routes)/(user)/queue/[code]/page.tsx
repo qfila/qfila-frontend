@@ -5,6 +5,7 @@ import { Queue } from '@/types';
 import { ExitQueueButton } from './partials/exit-queue-button';
 import { QueueInfoButton } from './partials/queue-info-button';
 import { getLoggedUser } from '@/lib/actions';
+import Link from 'next/link';
 
 interface Params {
   code: string;
@@ -29,9 +30,9 @@ export default async function QueuePage({ params }: Props) {
   });
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl md:text-3xl text-center">{queue.title}</h1>
-      <p className="text-lg md:text-2xl text-center">{queue.description}</p>
+    <div className="p-4 max-w-md">
+      <h1 className="text-2xl lg:text-3xl text-center">{queue.title}</h1>
+      <p className="text-lg lg:text-2xl text-center">{queue.description}</p>
       <Separator className="my-7 md:my-10" />
       <div className="max-w-fit mx-auto">
         <h3 className="text-2xl text-center font-light ">Tempo restante</h3>
@@ -53,6 +54,9 @@ export default async function QueuePage({ params }: Props) {
           queueId={queue.id}
         />
       </div>
+      <Link className="text-primary underline mt-4 inline-block" href={'/'}>
+        Ir para a página inicial
+      </Link>
     </div>
   );
 }

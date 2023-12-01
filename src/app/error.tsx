@@ -36,8 +36,13 @@ export default function Error({
           <p className="font-medium text-muted-foreground max-w-xl text-lg">
             Ops! Algo deu errado. Por favor, tente novamente mais tarde.
           </p>
-
           <Button onClick={() => reset()}>Tentar novamente</Button>
+          <p className="font-medium text-muted-foreground max-w-xl text-lg">
+            ou va para a página principal
+          </p>
+          <Link href={'/'} className="underline text-primary">
+            <Button>Ir para página principal</Button>
+          </Link>
         </>
       )}
     </main>
