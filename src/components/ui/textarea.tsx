@@ -6,16 +6,18 @@ export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: boolean;
   helperText?: string;
+  fullWidth?: boolean;
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, error, helperText, ...props }, ref) => {
+  ({ className, error, helperText, fullWidth, ...props }, ref) => {
     return (
-      <>
+      <div className={cn('flex flex-col gap-1', fullWidth && 'w-full')}>
         <textarea
           className={cn(
             'flex min-h-[80px] resize-none w-full rounded-[4px] border border-[#9a9a9a] bg-background px-4 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:[#9a9a9a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50',
             className,
+            fullWidth && 'w-full',
           )}
           ref={ref}
           {...props}
@@ -30,7 +32,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             {helperText}
           </span>
         )}
-      </>
+      </div>
     );
   },
 );

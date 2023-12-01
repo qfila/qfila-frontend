@@ -1,11 +1,32 @@
 import { LogoutButton } from '@/components/logout-button';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { getLoggedUser } from '@/lib/actions';
 import Link from 'next/link';
+import SignInForm from './sign-in/partials/form';
+import { JoinQueueForm } from './partials/join-queue-form';
 
 export default async function Home() {
   const loggedUser = await getLoggedUser();
+
+  if (!loggedUser) {
+    return (
+      <Dialog open>
+        <DialogContent hideCloseButton className="p-8">
+          <DialogHeader className="mb-2">
+            <DialogTitle className="font-light text-2xl">
+              Faça o login para continuar
+            </DialogTitle>
+          </DialogHeader>
+          <SignInForm />
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
     <div className="w-full p-4 max-w-xs flex flex-col gap-4 justify-center items-center">
@@ -21,14 +42,7 @@ export default async function Home() {
         </div>
       )}
 
-      <div className="mb-7">
-        <h1 className="text-5xl font-light">QFILA</h1>
-        <h2 className="text-2xl font-light text-muted w-max ml-auto leading-6">
-          Filas
-        </h2>
-      </div>
-      <Input fullWidth placeholder="Código da fila" />
-      <Button className="w-full">Enviar</Button>
+      <JoinQueueForm />
 
       {!loggedUser && (
         <div className="text-black text-sm">

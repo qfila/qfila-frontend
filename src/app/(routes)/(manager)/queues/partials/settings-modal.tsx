@@ -11,7 +11,6 @@ import {
 import { Settings } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import { useState } from 'react';
-import * as yup from 'yup';
 import { axiosErrorMessageHandler } from '@/lib/utils';
 import api from '@/services/api';
 import toast from 'react-hot-toast';
@@ -25,6 +24,16 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
 import { Queue } from '@/types';
+import {
+  YupQueueSchemaType,
+  yupQueueSchema,
+} from '../../partials/yup-queue-schema';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 interface Props {
   queue: Queue;
@@ -40,39 +49,11 @@ interface ModalRow {
   value: string | number;
 }
 
-const editQueueSchema = yup.object({
-  title: yup
-    .string()
-    .min(3, 'Insira no mínimo 3 caracteres.')
-    .required('Nome da fila é obrigatório.'),
-  description: yup
-    .string()
-    .min(3, 'Insira no mínimo 3 caracteres.')
-    .required('Descrição da fila é obrigatório.'),
-  averageWaitTimeInMinutes: yup
-    .number()
-    .positive()
-    .min(1, 'Insira no mínimo 1 minuto(s)')
-    .transform((value) =>
-      isNaN(value) || value === null || value === undefined ? 0 : value,
-    )
-    .required('Tempo médio em minutos é obrigatório.'),
-  maxParticipants: yup
-    .number()
-    .positive()
-    .min(4, 'Insira no mínimo 4')
-    .transform((value) =>
-      isNaN(value) || value === null || value === undefined ? 0 : value,
-    )
-    .required('Quantidade total de participantes é obrigatório.'),
-});
-
-type EditQueueSchema = yup.InferType<typeof editQueueSchema>;
-
 export function SettingsModal({ queue }: Props) {
   const [openModal, setOpenModal] = useState(false);
   const [openDeleteQueuePopover, setOpenDeleteQueuePopover] = useState(false);
   const [editQueue, setEditQueue] = useState(false);
+
   const { refresh } = useRouter();
 
   const modalRows: ModalRow[] = [
@@ -101,14 +82,22 @@ export function SettingsModal({ queue }: Props) {
   const {
     control,
     handleSubmit,
-    getValues,
+    reset,
     formState: { errors, isSubmitting },
-  } = useForm<EditQueueSchema>({
-    resolver: yupResolver(editQueueSchema),
+  } = useForm<YupQueueSchemaType>({
+    resolver: yupResolver(yupQueueSchema),
   });
 
+  const handleCancelEdit = () => {
+    setEditQueue(false);
+    reset();
+  };
+
   const handleOpenModal = (value: boolean) => {
-    if (value === false) setEditQueue(false);
+    if (value === false) {
+      handleCancelEdit();
+      setOpenDeleteQueuePopover(false);
+    }
     setOpenModal(value);
   };
 
@@ -137,7 +126,7 @@ export function SettingsModal({ queue }: Props) {
     description,
     averageWaitTimeInMinutes,
     maxParticipants,
-  }: EditQueueSchema) => {
+  }: YupQueueSchemaType) => {
     try {
       // await api.post('/queue', {
       //   title,
@@ -153,7 +142,8 @@ export function SettingsModal({ queue }: Props) {
       });
 
       toast.success(`Fila "${title}" editada com sucesso!`);
-      handleEditQueue(false);
+      handleOpenModal(false);
+      refresh();
     } catch (error) {
       toast.error(axiosErrorMessageHandler(error as Error));
     }
@@ -214,10 +204,6 @@ export function SettingsModal({ queue }: Props) {
         {modalRows.map((row) => {
           let value = row.value;
 
-          if (Object.keys(getValues()).length > 0) {
-            value = getValues()[row.name];
-          }
-
           if (row.name === 'averageWaitTimeInMinutes') {
             value = `${value} minutos`;
           }
@@ -228,11 +214,25 @@ export function SettingsModal({ queue }: Props) {
 
           return (
             <div
-              key={row.name}
-              className="flex flex-col sm:flex-row sm:items-center justify-between sm:gap-20 w-full"
+              key={row.placeholder}
+              className="flex flex-col sm:flex-row sm:items-center justify-between sm:gap-6"
             >
-              <p className="text-foreground">{row.placeholder}</p>
-              <p className="max-w-[200px] break-words leading-5">{value}</p>
+              <p className="text-foreground truncate">{row.placeholder}</p>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="cursor-default">
+                    <p className="max-w-[200px] break-words leading-5 truncate">
+                      {value}
+                    </p>
+                  </TooltipTrigger>
+
+                  <TooltipContent>
+                    <p className="max-w-[250px] break-words leading-5">
+                      {value}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           );
         })}
@@ -245,7 +245,7 @@ export function SettingsModal({ queue }: Props) {
       return (
         <div className="flex items-center justify-between gap-8 mt-4">
           <Button
-            onClick={() => handleEditQueue(false)}
+            onClick={handleCancelEdit}
             className="w-full rounded-3xl"
             colorVariant="destructive"
             variant="outline"

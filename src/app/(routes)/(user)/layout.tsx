@@ -1,10 +1,15 @@
+import { getLoggedUser } from '@/lib/actions';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
-export default function UserLayout({
+export default async function UserLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const loggedUser = await getLoggedUser();
+  if (loggedUser?.role === 'MANAGER') notFound();
+
   return (
     <div className="h-screen flex">
       <div className="h-full hidden lg:block  w-[1024px] relative">

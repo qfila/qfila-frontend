@@ -8,6 +8,7 @@ export interface User {
 
 export interface Queue {
   id: string;
+  code: string;
   title: string;
   description: string;
   averageWaitTimeInMinutes: number;

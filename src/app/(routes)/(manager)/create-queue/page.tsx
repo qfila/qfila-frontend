@@ -7,38 +7,12 @@ import { toast } from 'react-hot-toast';
 import api from '@/services/api';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
-
-const yupSchema = yup.object({
-  title: yup
-    .string()
-    .min(3, 'Insira no mínimo 3 caracteres.')
-    .required('Nome da fila é obrigatório.'),
-  description: yup
-    .string()
-    .min(3, 'Insira no mínimo 3 caracteres.')
-    .required('Descrição da fila é obrigatório.'),
-  averageWaitTimeInMinutes: yup
-    .number()
-    .positive()
-    .min(1, 'Insira no mínimo 1 minuto(s)')
-    .transform((value) =>
-      isNaN(value) || value === null || value === undefined ? 0 : value,
-    )
-    .required('Tempo médio em minutos é obrigatório.'),
-  maxParticipants: yup
-    .number()
-    .positive()
-    .min(4, 'Insira no mínimo 4')
-    .transform((value) =>
-      isNaN(value) || value === null || value === undefined ? 0 : value,
-    )
-    .required('Quantidade total de participantes é obrigatório.'),
-});
-
-type YupSchemaType = yup.InferType<typeof yupSchema>;
+import {
+  YupQueueSchemaType,
+  yupQueueSchema,
+} from '../partials/yup-queue-schema';
 
 export default function CreateQueue() {
   const { push, refresh } = useRouter();
@@ -46,8 +20,8 @@ export default function CreateQueue() {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<YupSchemaType>({
-    resolver: yupResolver(yupSchema),
+  } = useForm<YupQueueSchemaType>({
+    resolver: yupResolver(yupQueueSchema),
   });
 
   const onSubmit = async ({
@@ -55,7 +29,7 @@ export default function CreateQueue() {
     description,
     averageWaitTimeInMinutes,
     maxParticipants,
-  }: YupSchemaType) => {
+  }: YupQueueSchemaType) => {
     try {
       await api.post('/queue', {
         title,

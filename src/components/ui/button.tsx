@@ -60,6 +60,7 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
+  icon?: React.ReactNode;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -71,20 +72,28 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       size,
       asChild = false,
       loading,
+      icon,
       ...props
     },
     ref,
   ) => {
     const Comp = asChild ? Slot : 'button';
+
+    function renderIcon() {
+      if (loading) return <Loader2 className="h-4 w-4 animate-spin" />;
+      if (icon) return icon;
+    }
+
     return (
       <Comp
         className={cn(
           buttonVariants({ variant, colorVariant, size, className }),
+          loading || icon ? 'flex items-center gap-2' : '',
         )}
         ref={ref}
         {...props}
       >
-        {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+        {renderIcon()}
         {props.children}
       </Comp>
     );
