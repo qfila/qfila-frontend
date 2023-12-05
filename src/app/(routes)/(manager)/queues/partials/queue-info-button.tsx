@@ -136,20 +136,24 @@ export function QueueInfoButton({ queue }: Props) {
   }
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const currentSeconds = new Date().getSeconds();
+    let interval: string | number | NodeJS.Timeout | undefined;
 
-      if (currentSeconds % 5 === 0) {
-        fetchParticipants();
-      }
-    }, 1000);
+    if (openModal) {
+      interval = setInterval(() => {
+        const currentSeconds = new Date().getSeconds();
+
+        if (currentSeconds % 5 === 0) {
+          fetchParticipants();
+        }
+      }, 1000);
+    }
 
     return () => {
-      clearInterval(interval);
+      if (interval) clearInterval(interval);
     };
 
     // eslint-disable-next-line
-  }, []);
+  }, [openModal]);
 
   return (
     <Dialog open={openModal} onOpenChange={handleOpenModal}>
