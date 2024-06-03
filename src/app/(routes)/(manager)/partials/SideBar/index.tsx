@@ -39,9 +39,14 @@ export function ManagerSideBar({ loggedUser }: Props) {
       modal={showOverlay}
     >
       {!isDesktop && (
-        <SheetTrigger className="p-3" onClick={() => handleShowSideBar(true)}>
-          <Menu />
-        </SheetTrigger>
+        <header className="sticky top-0 z-10 bg-white shadow-sm mb-4 flex items-center py-2">
+          <SheetTrigger className="p-3" onClick={() => handleShowSideBar(true)}>
+            <Menu className="text-gray-700" />
+          </SheetTrigger>
+          <h1 className="text-lg text-center text-gray-700 font-medium ml-4 truncate">
+            {loggedUser?.username}
+          </h1>
+        </header>
       )}
 
       <SheetContent
