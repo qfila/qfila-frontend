@@ -9,8 +9,9 @@ import { useEffect, useState } from 'react';
 import { QueueInfoButton } from './queue-info-button';
 import { ExitQueueButton } from './exit-queue-button';
 import { CustomQueueProps } from '../page';
-import { axiosErrorMessageHandler } from '@/lib/utils';
-import toast from 'react-hot-toast';
+// import { axiosErrorMessageHandler } from '@/lib/utils';
+// import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   loggedUser: User | null;
@@ -19,6 +20,8 @@ interface Props {
 
 export function Content({ loggedUser, code }: Props) {
   const [queue, setQueue] = useState({} as CustomQueueProps);
+
+  const { push } = useRouter();
 
   const fetch = async () => {
     try {
@@ -30,7 +33,8 @@ export function Content({ loggedUser, code }: Props) {
 
       setQueue(queue);
     } catch (error) {
-      toast.error(axiosErrorMessageHandler(error as Error));
+      push('/');
+      // toast.error(axiosErrorMessageHandler(error as Error));
     }
   };
 
