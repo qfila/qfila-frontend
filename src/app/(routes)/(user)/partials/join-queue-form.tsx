@@ -37,7 +37,7 @@ export function JoinQueueForm() {
         onChange={handleOnChange}
         value={queueCode}
         fullWidth
-        placeholder="Código da fila"
+        placeholder="Código da sala"
       />
       <Button onClick={joinQueue} className="w-full">
         Enviar

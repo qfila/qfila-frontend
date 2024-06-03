@@ -12,7 +12,6 @@ import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
 
 const yupSchema = yup.object({
   name: yup

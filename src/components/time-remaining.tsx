@@ -38,24 +38,30 @@ export function TimeRemaining({
       )}
     >
       <div className="flex flex-col items-center justify-center h-full">
-        <div className="mt-4">
-          <p
-            className={cn(
-              'text-center font-semibold text-muted/70',
-              forManager ? 'text-2xl xl:text-3xl' : 'text-4xl',
-            )}
-          >
-            {createTimeByMinutes(averageTimePerParticipant * participantsCount)}
-          </p>
-          <p
-            className={cn(
-              'text-center font-[300] text-muted-foreground',
-              forManager ? 'text-xs xl:text-md' : 'text-md',
-            )}
-          >
-            ~{averageTimePerParticipant} min/pessoa
-          </p>
-        </div>
+        {userPosition === 1 ? (
+          <p className="mt-4 text-xl">Chegou sua vez!</p>
+        ) : (
+          <div className="mt-4">
+            <p
+              className={cn(
+                'text-center font-semibold text-muted/70',
+                forManager ? 'text-2xl xl:text-3xl' : 'text-4xl',
+              )}
+            >
+              {createTimeByMinutes(
+                averageTimePerParticipant * participantsCount,
+              )}
+            </p>
+            <p
+              className={cn(
+                'text-center font-[300] text-muted-foreground',
+                forManager ? 'text-xs xl:text-md' : 'text-md',
+              )}
+            >
+              ~{averageTimePerParticipant} min/pessoa
+            </p>
+          </div>
+        )}
         <div
           className={cn(
             'text-base md:text-lg p-2 absolute text-muted',
@@ -64,16 +70,17 @@ export function TimeRemaining({
               : 'bg-background bottom-[-1.5rem]',
           )}
         >
-          {forManager ? (
-            `${participantsCount} pessoas`
-          ) : (
-            <div className="flex flex-col items-center justify-center">
-              <span className="text-xl text-foreground font-light">
-                {userPosition ? userPosition - 1 : participantsCount} pessoas
-              </span>
-              <span className="inline-block text-muted">na sua frente</span>
-            </div>
-          )}
+          {forManager
+            ? `${participantsCount} pessoas`
+            : userPosition !== 1 && (
+                <div className="flex flex-col items-center justify-center">
+                  <span className="text-xl text-foreground font-light">
+                    {userPosition ? userPosition - 1 : participantsCount}{' '}
+                    pessoas
+                  </span>
+                  <span className="inline-block text-muted">na sua frente</span>
+                </div>
+              )}
         </div>
       </div>
     </div>

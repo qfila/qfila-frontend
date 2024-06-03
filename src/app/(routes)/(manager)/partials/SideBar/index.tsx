@@ -10,15 +10,7 @@ import {
 import { logOut } from '@/lib/actions';
 import { useMediaQuery } from '@/lib/hooks/useMediaQuery';
 import { User } from '@/types';
-import {
-  Crown,
-  FilePlus2,
-  HelpCircle,
-  Home,
-  LogOut,
-  Menu,
-  Settings,
-} from 'lucide-react';
+import { Crown, FilePlus2, Home, LogOut, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { SideBarNavLink } from './nav-link';
 
@@ -30,9 +22,8 @@ export function ManagerSideBar({ loggedUser }: Props) {
   const [openOnMobile, setOpenOnMobile] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
-  const handleShowSideBar = (value: boolean) => {
-    setOpenOnMobile(value);
-  };
+  const handleShowSideBar = (value: boolean) => setOpenOnMobile(value);
+  const closeSidebar = () => setOpenOnMobile(false);
 
   const handleLogOut = () => {
     logOut();
@@ -74,15 +65,19 @@ export function ManagerSideBar({ loggedUser }: Props) {
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <SideBarNavLink title="Ínicio" icon={<Home />} href="/queues" />
+            <SideBarNavLink
+              title="Ínicio"
+              icon={<Home />}
+              href="/queues"
+              onClick={closeSidebar}
+            />
             <SideBarNavLink
               title="Criar nova fila"
               icon={<FilePlus2 />}
+              onClick={closeSidebar}
               className="text-primary"
               href="/create-queue"
             />
-            <SideBarNavLink title="Ajuda" icon={<HelpCircle />} />
-            <SideBarNavLink title="Configurações" icon={<Settings />} />
           </div>
           <div className="flex justify-between items-center gap-4">
             <div>
@@ -94,6 +89,7 @@ export function ManagerSideBar({ loggedUser }: Props) {
             <button
               onClick={handleLogOut}
               className="rounded-full hover:bg-gray-200/70 p-2"
+              id="leave"
             >
               <LogOut />
             </button>

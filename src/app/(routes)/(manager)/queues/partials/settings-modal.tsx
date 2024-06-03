@@ -128,13 +128,7 @@ export function SettingsModal({ queue }: Props) {
     maxParticipants,
   }: YupQueueSchemaType) => {
     try {
-      // await api.post('/queue', {
-      //   title,
-      //   description,
-      //   averageWaitTimeInMinutes,
-      //   maxParticipants,
-      // });
-      console.log({
+      await api.put(`/queue/${queue.id}`, {
         title,
         description,
         averageWaitTimeInMinutes,

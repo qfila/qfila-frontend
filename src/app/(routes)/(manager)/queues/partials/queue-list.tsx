@@ -73,9 +73,7 @@ export function QueueList() {
                 Criada em {formatDate(queue.createdAt)}
               </p>
               <div className="flex flex-row justify-between w-[50%]">
-                <div className="text-2xl">o</div>
                 <QueueInfoButton queue={queue} />
-                <div className="text-2xl">o</div>
               </div>
             </div>
           </div>
