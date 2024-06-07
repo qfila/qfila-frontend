@@ -60,7 +60,7 @@ export function ManagerSideBar({ loggedUser }: Props) {
           <h3 className="text-2xl font-light text-muted leading-6">Gerentes</h3>
         </SheetHeader>
         <div className="flex flex-col justify-between h-[calc(100%-160px)] mt-16">
-          <div className="hidden" />
+          <div />
           <div className="flex flex-col gap-4">
             <SideBarNavLink
               title="Ínicio"
