@@ -57,9 +57,9 @@ export function QueueList() {
           className="w-full flex justify-between max-w-lg h-full relative"
         >
           <SettingsModal queue={queue} />
-          <div className="w-full md:w-1/2 flex flex-col justify-between h-full pt-2 pb-3 md:pb-6">
-            <CardHeader className="gap-2">
-              <span className="text-sm text-muted-foreground">
+          <div className="w-full md:w-1/2 flex flex-col justify-between h-full pb-3">
+            <CardHeader>
+              <span className="text-sm text-muted-foreground mb-6">
                 Código da fila: {queue.code}
               </span>
               <CardTitle className="text-lg leading-snug break-words">
@@ -79,7 +79,7 @@ export function QueueList() {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-center h-[100%] pt-5 pb-3 md:pb-6 pr-3 md:pr-6">
+          <div className="flex items-center justify-center h-[100%] pt-6 pr-6">
             <TimeRemaining
               forManager
               participantsCount={queue.participantsCount}
