@@ -13,6 +13,7 @@ import { SettingsModal } from './settings-modal';
 import { QueueInfoButton } from './queue-info-button';
 import { useEffect, useState } from 'react';
 import api from '@/services/api';
+import { QRCodeButton } from './qr-code-button';
 
 interface GetQueueResponse {
   queues: Queue[];
@@ -72,8 +73,9 @@ export function QueueList() {
               <p className="text-muted/60 text-sm">
                 Criada em {formatDate(queue.createdAt)}
               </p>
-              <div className="flex flex-row justify-between w-[50%]">
+              <div className="flex flex-row justify-start gap-4 w-[50%]">
                 <QueueInfoButton queue={queue} />
+                <QRCodeButton queue={queue} />
               </div>
             </div>
           </div>
