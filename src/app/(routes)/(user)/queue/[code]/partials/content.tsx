@@ -15,11 +15,11 @@ import { useRouter } from 'next/navigation';
 
 interface Props {
   loggedUser: User | null;
-  code: string;
+  data: CustomQueueProps;
 }
 
-export function Content({ loggedUser, code }: Props) {
-  const [queue, setQueue] = useState({} as CustomQueueProps);
+export function Content({ loggedUser, data }: Props) {
+  const [queue, setQueue] = useState(data || {});
 
   const { push } = useRouter();
 
@@ -27,7 +27,7 @@ export function Content({ loggedUser, code }: Props) {
     try {
       const { data: queue } = await api.get<CustomQueueProps>('/queue', {
         params: {
-          code,
+          code: data.code,
         },
       });
 
@@ -39,8 +39,6 @@ export function Content({ loggedUser, code }: Props) {
   };
 
   useEffect(() => {
-    fetch();
-
     const interval = setInterval(() => {
       const currentSeconds = new Date().getSeconds();
 

@@ -20,7 +20,16 @@ const yupSchema = yup.object({
 
 type YupSchemaType = yup.InferType<typeof yupSchema>;
 
-export default function SignInForm() {
+interface SignInFormProps {
+  redirectAfterLogin?: boolean;
+  // eslint-disable-next-line no-unused-vars
+  onSuccess?: (accessToken: string) => void;
+}
+
+export default function SignInForm({
+  redirectAfterLogin = true,
+  onSuccess,
+}: SignInFormProps) {
   const { push } = useRouter();
   const {
     control,
@@ -42,7 +51,8 @@ export default function SignInForm() {
       const isManager = data.role === 'MANAGER';
 
       if (isManager) return push('/queues');
-      else push('/');
+      else redirectAfterLogin && push('/');
+      onSuccess && onSuccess(data?.accessToken);
     } catch (error) {
       toast.error(axiosErrorMessageHandler(error as Error));
     }

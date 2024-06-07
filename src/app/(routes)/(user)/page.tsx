@@ -1,32 +1,13 @@
 import { LogoutButton } from '@/components/logout-button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { getLoggedUser } from '@/lib/actions';
 import Link from 'next/link';
-import SignInForm from './sign-in/partials/form';
 import { JoinQueueForm } from './partials/join-queue-form';
+import SignInDialogForm from '@/components/sign-in-dialog-form';
 
 export default async function Home() {
   const loggedUser = await getLoggedUser();
 
-  if (!loggedUser) {
-    return (
-      <Dialog open>
-        <DialogContent hideCloseButton className="p-8">
-          <DialogHeader className="mb-2">
-            <DialogTitle className="font-light text-2xl">
-              Faça o login para continuar
-            </DialogTitle>
-          </DialogHeader>
-          <SignInForm />
-        </DialogContent>
-      </Dialog>
-    );
-  }
+  if (!loggedUser) return <SignInDialogForm />;
 
   return (
     <div className="w-full p-4 max-w-xs flex flex-col gap-4 justify-center items-center">
