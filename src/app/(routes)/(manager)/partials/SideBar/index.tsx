@@ -10,7 +10,7 @@ import {
 import { logOut } from '@/lib/actions';
 import { useMediaQuery } from '@/lib/hooks/useMediaQuery';
 import { User } from '@/types';
-import { Crown, FilePlus2, Home, LogOut, Menu } from 'lucide-react';
+import { FilePlus2, Home, LogOut, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { SideBarNavLink } from './nav-link';
 
@@ -60,15 +60,7 @@ export function ManagerSideBar({ loggedUser }: Props) {
           <h3 className="text-2xl font-light text-muted leading-6">Gerentes</h3>
         </SheetHeader>
         <div className="flex flex-col justify-between h-[calc(100%-160px)] mt-16">
-          <div className="flex gap-4">
-            <Crown fill="#000" />
-            <div>
-              Plano Business II
-              <p className="text-secondary text-sm underline">
-                Fazer upgrade de plano
-              </p>
-            </div>
-          </div>
+          <div className="hidden" />
           <div className="flex flex-col gap-4">
             <SideBarNavLink
               title="Ínicio"

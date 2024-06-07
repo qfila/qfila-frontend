@@ -23,15 +23,11 @@ export interface Participant extends User {
 }
 
 export function QRCodeButton({ queue }: Props) {
-  console.log(queue);
-
   const [openModal, setOpenModal] = useState(false);
 
   const handleOpenModal = (value: boolean) => {
     setOpenModal(value);
   };
-
-  console.log(window.location.origin + `/queue/${queue.code}`);
 
   return (
     <Dialog open={openModal} onOpenChange={handleOpenModal}>
@@ -48,7 +44,7 @@ export function QRCodeButton({ queue }: Props) {
           <Image
             className="w-[100%]"
             src={`https://api.qrserver.com/v1/create-qr-code/?size=1024x1024&bgcolor=f0f0f0&data=${
-              window.location.origin + `/queue/${queue.code}`
+              window.location.origin + `/queue/${queue.code}/join`
             }`}
             height="240"
             width="240"
